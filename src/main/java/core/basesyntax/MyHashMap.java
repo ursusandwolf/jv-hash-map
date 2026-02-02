@@ -35,21 +35,29 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     }
 
-    private void resize() {
-    }
-
-    private boolean keyEquals(K key, K key1) {
-        return key == key1 || (key != null && key.equals(key1));
-    }
-
     @Override
     public V getValue(K key) {
+        int index = index(key);
+        Entry<K, V> entry = table[index];
+        while (entry != null) {
+            if (keyEquals(entry.key, key)) {
+                return entry.value;
+            }
+            entry = entry.next;
+        }
         return null;
     }
 
     @Override
     public int getSize() {
         return 0;
+    }
+
+    private void resize() {
+    }
+
+    private boolean keyEquals(K key, K key1) {
+        return key == key1 || (key != null && key.equals(key1));
     }
 
     private int index(K key) {
@@ -59,8 +67,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         return Math.abs(key.hashCode()) % table.length;
     }
 
-
-    class Entry<K, V> {
+    static class Entry<K, V> {
         final K key;
         V value;
         Entry<K, V> next;
