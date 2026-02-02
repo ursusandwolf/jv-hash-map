@@ -83,7 +83,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         private V value;
         private Entry<K, V> next;
 
-        Entry(K key, V value) {
+        private Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
