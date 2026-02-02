@@ -78,7 +78,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         return Math.abs(key.hashCode()) % table.length;
     }
 
-    static class Entry<K, V> {
+    private static class Entry<K, V> {
         private final K key;
         private V value;
         private Entry<K, V> next;
@@ -87,18 +87,5 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
             this.key = key;
             this.value = value;
         }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        public Entry<K, V> getNext() {
-            return next;
-        }
     }
-
 }
