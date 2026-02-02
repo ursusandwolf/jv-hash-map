@@ -1,5 +1,7 @@
 package core.basesyntax;
 
+import java.util.Objects;
+
 public class MyHashMap<K, V> implements MyMap<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
     private static final float LOAD_FACTOR = 0.75f;
@@ -15,7 +17,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     @Override
     public void put(K key, V value) {
         int index = index(key); // calc bucket index
-        Entry<K,V> entry = table[index]; // first element in list
+        Entry<K, V> entry = table[index]; // first element in list
         while (entry != null) {
             if (keyEquals(entry.key, key)) {
                 entry.value = value; //rewrite value
@@ -24,7 +26,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
             entry = entry.next; //go to next element
         }
         // So, if key was not found, we need to create new entry
-        Entry<K,V> newEntry = new Entry<>(key, value);
+        Entry<K, V> newEntry = new Entry<>(key, value);
         newEntry.next = table[index]; // insert new element in begin of chain
         table[index] = newEntry; //new link of the head list to the new entry
         size++;
@@ -53,10 +55,10 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     private void resize() {
-        Entry<K,V>[] oldTable = table;
+        Entry<K, V>[] oldTable = table;
         table = new Entry[oldTable.length * 2];
         size = 0; // will be recalculate new size in the put method
-        for (Entry<K,V> entry : oldTable) {
+        for (Entry<K, V> entry : oldTable) {
             while (entry != null) {
                 put(entry.key, entry.value); // insert in new table
                 entry = entry.next;
@@ -65,7 +67,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     private boolean keyEquals(K key, K key1) {
-        return key == key1 || (key != null && key.equals(key1));
+        return Objects.equals(key, key1);
     }
 
     private int index(K key) {
@@ -76,13 +78,25 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     static class Entry<K, V> {
-        final K key;
-        V value;
-        Entry<K, V> next;
+        private final K key;
+        private V value;
+        private Entry<K, V> next;
 
         Entry(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public Entry<K, V> getNext() {
+            return next;
         }
     }
 
