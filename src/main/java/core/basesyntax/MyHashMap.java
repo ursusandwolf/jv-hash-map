@@ -14,14 +14,28 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = index(key);
-        Entry<K,V> entry = table[index];
+        int index = index(key); // calc bucket index
+        Entry<K,V> entry = table[index]; // first element in list
         while (entry != null) {
             if (keyEquals(entry.key, key)) {
-                entry.value = value;
+                entry.value = value; //rewrite value
+                return; //exit, size will not change
             }
+            entry = entry.next; //go to next element
+        }
+        // So, if key was not found, we need to create new entry
+        Entry<K,V> newEntry = new Entry<>(key, value);
+        newEntry.next = table[index]; // insert new element in begin of chain
+        table[index] = newEntry; //new link of the head list to the new entry
+        size++;
+
+        if (size >= table.length * LOAD_FACTOR) {
+            resize();
         }
 
+    }
+
+    private void resize() {
     }
 
     private boolean keyEquals(K key, K key1) {
