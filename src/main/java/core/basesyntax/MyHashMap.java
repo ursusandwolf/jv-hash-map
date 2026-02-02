@@ -5,6 +5,7 @@ import java.util.Objects;
 public class MyHashMap<K, V> implements MyMap<K, V> {
     private static final int DEFAULT_CAPACITY = 16;
     private static final float LOAD_FACTOR = 0.75f;
+    private static final int RESIZE_MULTIPLIER = 2;
 
     private Entry<K, V>[] table;
     private int size = 0;
@@ -56,7 +57,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     private void resize() {
         Entry<K, V>[] oldTable = table;
-        table = new Entry[oldTable.length * 2];
+        table = new Entry[oldTable.length * RESIZE_MULTIPLIER];
         size = 0; // will be recalculate new size in the put method
         for (Entry<K, V> entry : oldTable) {
             while (entry != null) {
