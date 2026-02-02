@@ -32,7 +32,6 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         if (size >= table.length * LOAD_FACTOR) {
             resize();
         }
-
     }
 
     @Override
@@ -50,10 +49,19 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     @Override
     public int getSize() {
-        return 0;
+        return size;
     }
 
     private void resize() {
+        Entry<K,V>[] oldTable = table;
+        table = new Entry[oldTable.length * 2];
+        size = 0; // will be recalculate new size in the put method
+        for (Entry<K,V> entry : oldTable) {
+            while (entry != null) {
+                put(entry.key, entry.value); // insert in new table
+                entry = entry.next;
+            }
+        }
     }
 
     private boolean keyEquals(K key, K key1) {
